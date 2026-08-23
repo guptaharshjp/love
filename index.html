@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>a question for you</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#2b0f2e;
+    --bg2:#4a1942;
+    --bg3:#7a1f4b;
+    --pink:#ff8fab;
+    --pink-deep:#ff5d8f;
+    --gold:#ffd8a8;
+    --cream:#fff5ee;
+    --card:rgba(255,255,255,0.08);
+    --card-border:rgba(255,255,255,0.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,143,171,0.18), transparent 45%),
+      radial-gradient(circle at 80% 0%, rgba(255,216,168,0.12), transparent 40%),
+      linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+    color:var(--cream);
+    font-family:'Quicksand', sans-serif;
+    overflow-x:hidden;
+  }
+  .hearts{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+  }
+  .heart{
+    position:absolute;
+    bottom:-10%;
+    font-size:1.4rem;
+    opacity:0.55;
+    animation:float linear infinite;
+    filter:drop-shadow(0 0 6px rgba(255,143,171,0.4));
+  }
+  @keyframes float{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:0.6; }
+    90%{ opacity:0.5; }
+    100%{ transform:translateY(-115vh) translateX(var(--drift,20px)) rotate(360deg); opacity:0; }
+  }
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:640px;
+    margin:0 auto;
+    padding:6vh 1.5rem 8vh;
+  }
+  .stage{
+    min-height:88vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .eyebrow{
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    font-size:0.7rem;
+    color:var(--gold);
+    margin-bottom:1.2rem;
+    opacity:0.85;
+  }
+  h1{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:clamp(2.1rem, 6vw, 3.4rem);
+    line-height:1.15;
+    margin:0 0 1rem;
+    background:linear-gradient(90deg, var(--cream), var(--pink) 60%, var(--gold));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .sub{
+    font-size:1.05rem;
+    line-height:1.6;
+    color:rgba(255,245,238,0.8);
+    max-width:460px;
+    margin:0 auto 2.8rem;
+  }
+  .btn-row{
+    display:flex;
+    gap:1.2rem;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    min-height:70px;
+    width:100%;
+  }
+  button{
+    font-family:'Quicksand', sans-serif;
+    font-weight:700;
+    font-size:1.05rem;
+    border-radius:999px;
+    padding:0.95rem 2.4rem;
+    cursor:pointer;
+    border:none;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  #yesBtn{
+    background:linear-gradient(135deg, var(--pink-deep), #c2185b);
+    color:#fff;
+    box-shadow:0 10px 30px -8px rgba(255,93,143,0.55);
+  }
+  #yesBtn:hover{ transform:translateY(-2px) scale(1.04); box-shadow:0 14px 34px -6px rgba(255,93,143,0.7); }
+  #noBtn{
+    background:rgba(255,255,255,0.08);
+    color:var(--cream);
+    border:1px solid var(--card-border);
+    position:relative;
+  }
+  #noBtn.roaming{ position:fixed; z-index:5; }
+  .yes-scale{ font-size: calc(1rem + var(--yesboost, 0) * 0.14rem); padding: calc(0.95rem + var(--yesboost, 0) * 0.12rem) calc(2.4rem + var(--yesboost, 0) * 0.3rem); }
+
+  /* ---- Step 2 : proposal card ---- */
+  .card{
+    display:none;
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:24px;
+    padding:2.4rem 1.8rem;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 20px 60px -20px rgba(0,0,0,0.5);
+    animation:rise 0.6s ease;
+  }
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(24px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .card h2{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:1.6rem;
+    margin:0 0 0.6rem;
+    color:var(--gold);
+  }
+  .card p.lead{
+    color:rgba(255,245,238,0.78);
+    margin:0 0 1.8rem;
+    line-height:1.6;
+  }
+  .checklist{
+    display:flex;
+    flex-direction:column;
+    gap:0.7rem;
+    margin-bottom:1.8rem;
+    text-align:left;
+  }
+  .check-item{
+    display:flex;
+    align-items:center;
+    gap:0.85rem;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:14px;
+    padding:0.85rem 1rem;
+    cursor:pointer;
+    transition:background 0.2s ease, border-color 0.2s ease;
+  }
+  .check-item:hover{ background:rgba(255,255,255,0.09); }
+  .check-item input{
+    appearance:none;
+    -webkit-appearance:none;
+    width:22px;
+    height:22px;
+    min-width:22px;
+    border-radius:7px;
+    border:2px solid var(--pink);
+    display:grid;
+    place-content:center;
+    cursor:pointer;
+    background:rgba(255,255,255,0.04);
+  }
+  .check-item input::before{
+    content:"";
+    width:12px;
+    height:12px;
+    border-radius:3px;
+    transform:scale(0);
+    transition:transform 0.15s ease;
+    background:linear-gradient(135deg, var(--pink-deep), var(--gold));
+  }
+  .check-item input:checked::before{ transform:scale(1); }
+  .check-item input:checked ~ .check-label{ color:var(--cream); }
+  .check-item.checked{ border-color:var(--pink-deep); background:rgba(255,93,143,0.12); }
+  .check-icon{ font-size:1.3rem; line-height:1; }
+  .check-label{ font-size:0.98rem; color:rgba(255,245,238,0.85); }
+  .check-label small{ display:block; font-size:0.78rem; color:rgba(255,245,238,0.5); margin-top:2px; }
+
+  textarea{
+    width:100%;
+    min-height:90px;
+    resize:vertical;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.05);
+    color:var(--cream);
+    font-family:'Quicksand', sans-serif;
+    font-size:0.95rem;
+    padding:0.9rem 1rem;
+    margin-bottom:1.6rem;
+  }
+  textarea::placeholder{ color:rgba(255,245,238,0.4); }
+  textarea:focus, .check-item input:focus{ outline:2px solid var(--pink); outline-offset:2px; }
+
+  #submitBtn{
+    width:100%;
+    background:linear-gradient(135deg, var(--pink-deep), #c2185b);
+    color:#fff;
+    font-size:1.05rem;
+    padding:1rem;
+    box-shadow:0 12px 30px -8px rgba(255,93,143,0.5);
+  }
+  #submitBtn:hover{ transform:translateY(-2px); }
+  #submitBtn:disabled{ opacity:0.6; cursor:default; transform:none; }
+
+  .status{
+    margin-top:1rem;
+    font-size:0.88rem;
+    color:var(--gold);
+    min-height:1.2em;
+  }
+
+  /* ---- thank you ---- */
+  .thanks{
+    display:none;
+    text-align:center;
+  }
+  .thanks .big-emoji{ font-size:3.4rem; margin-bottom:1rem; }
+  .thanks h2{
+    font-family:'Playfair Display', serif;
+    font-size:2rem;
+    color:var(--gold);
+    margin:0 0 0.8rem;
+  }
+  .thanks p{ color:rgba(255,245,238,0.8); line-height:1.6; }
+
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:rgba(255,245,238,0.35);
+    padding-bottom:2rem;
+  }
+
+  @media (max-width:480px){
+    .btn-row{ flex-direction:column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="wrap">
+
+  <!-- Step 1: the question -->
+  <section class="stage" id="stage1">
+    <div class="eyebrow">an important question</div>
+    <h1>Will you go out with me?</h1>
+    <p class="sub">No pressure at all — just something I've been wanting to ask you for a while now. Take your time. 💌</p>
+    <div class="btn-row" id="btnRow">
+      <button id="yesBtn">Yes 💕</button>
+      <button id="noBtn">No</button>
+    </div>
+  </section>
+
+  <!-- Step 2: proposal card -->
+  <section class="stage" id="stage2" style="display:none;">
+    <div class="card" id="card" style="display:block;">
+      <h2>I'm really glad. ✨</h2>
+      <p class="lead">Here are a few little things I'd love for us to share together — check off whichever ones make you smile too. Everything here is completely up to you, always.</p>
+
+      <form id="loveForm">
+        <div class="checklist">
+          <label class="check-item">
+            <input type="checkbox" name="wish" value="Holding hands">
+            <span class="check-icon">🤝</span>
+            <span class="check-label">Holding hands<small>on a walk, wherever</small></span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="wish" value="Eye contact / stealing glances">
+            <span class="check-icon">👀</span>
+            <span class="check-label">Eye contact<small>the kind that says more than words</small></span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="wish" value="Sharing food off the same plate">
+            <span class="check-icon">🍜</span>
+            <span class="check-label">Sharing food<small>same plate, same spoon</small></span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="wish" value="A kiss, someday, if it feels right">
+            <span class="check-icon">💋</span>
+            <span class="check-label">A kiss<small>only if and whenever it feels right</small></span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="wish" value="Long, aimless walks and talks">
+            <span class="check-icon">🌙</span>
+            <span class="check-label">Long walks &amp; talks<small>about everything and nothing</small></span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="wish" value="Movie nights">
+            <span class="check-icon">🎬</span>
+            <span class="check-label">Movie nights<small>your pick, always</small></span>
+          </label>
+        </div>
+
+        <textarea name="message" placeholder="Anything you want to say back? (totally optional)"></textarea>
+
+        <button type="submit" id="submitBtn">Send this back to me 💌</button>
+        <div class="status" id="status"></div>
+      </form>
+    </div>
+
+    <div class="thanks" id="thanks">
+      <div class="big-emoji">🥹💗</div>
+      <h2>Got it. Thank you.</h2>
+      <p>Whatever you chose, I'm really happy you're here. I'll talk to you soon.</p>
+    </div>
+  </section>
+
+  <footer>made with a nervous heart</footer>
+</div>
+
+<script>
+  // floating hearts background
+  const heartsEl = document.getElementById('hearts');
+  const glyphs = ['💗','💕','🤍','💫','✨'];
+  for(let i=0;i<26;i++){
+    const h = document.createElement('span');
+    h.className = 'heart';
+    h.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.setProperty('--drift', (Math.random()*80-40) + 'px');
+    h.style.animationDuration = (10 + Math.random()*14) + 's';
+    h.style.animationDelay = (Math.random()*14) + 's';
+    h.style.fontSize = (1 + Math.random()*1.3) + 'rem';
+    heartsEl.appendChild(h);
+  }
+
+  // playful dodging "No" button
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const btnRow = document.getElementById('btnRow');
+  let dodges = 0;
+
+  function dodge(){
+    dodges++;
+    const rect = btnRow.getBoundingClientRect();
+    const bw = noBtn.offsetWidth, bh = noBtn.offsetHeight;
+    const maxX = window.innerWidth - bw - 20;
+    const maxY = window.innerHeight - bh - 20;
+    const x = Math.max(20, Math.random()*maxX);
+    const y = Math.max(20, Math.random()*maxY);
+    noBtn.classList.add('roaming');
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+    yesBtn.style.setProperty('--yesboost', Math.min(dodges, 6));
+    yesBtn.classList.add('yes-scale');
+  }
+  noBtn.addEventListener('mouseenter', dodge);
+  noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); dodge(); }, {passive:false});
+  noBtn.addEventListener('click', function(e){ e.preventDefault(); dodge(); });
+
+  yesBtn.addEventListener('click', function(){
+    document.getElementById('stage1').style.display = 'none';
+    document.getElementById('stage2').style.display = 'flex';
+  });
+
+  // checklist visual state
+  document.querySelectorAll('.check-item input').forEach(function(cb){
+    cb.addEventListener('change', function(){
+      cb.closest('.check-item').classList.toggle('checked', cb.checked);
+    });
+  });
+
+  // submit -> formsubmit.co (ajax, no page reload)
+  const form = document.getElementById('loveForm');
+  const statusEl = document.getElementById('status');
+  const submitBtn = document.getElementById('submitBtn');
+  const FORM_ENDPOINT = 'https://formsubmit.co/ajax/harshgupta25012002@gmail.com';
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    submitBtn.disabled = true;
+    statusEl.textContent = 'sending…';
+
+    const checked = Array.from(document.querySelectorAll('input[name="wish"]:checked')).map(function(i){ return i.value; });
+    const message = form.message.value.trim();
+
+    const payload = new FormData();
+    payload.append('_subject', 'She said yes 💕 — here is what she checked');
+    payload.append('answer', 'YES');
+    payload.append('checked_items', checked.length ? checked.join(', ') : '(none selected)');
+    payload.append('message', message || '(no extra message)');
+    payload.append('_captcha', 'false');
+    payload.append('_template', 'box');
+
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: payload
+    }).then(function(res){
+      if(!res.ok) throw new Error('failed');
+      return res.json();
+    }).then(function(){
+      document.getElementById('card').style.display = 'none';
+      document.getElementById('thanks').style.display = 'block';
+    }).catch(function(){
+      statusEl.textContent = "Hmm, that didn't send — mind trying once more?";
+      submitBtn.disabled = false;
+    });
+  });
+</script>
+
+</body>
+</html>
