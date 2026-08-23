@@ -68,6 +68,19 @@
     justify-content:center;
     text-align:center;
   }
+  .progress{
+    display:flex;
+    gap:0.4rem;
+    margin-bottom:1.6rem;
+  }
+  .progress span{
+    width:26px;
+    height:4px;
+    border-radius:99px;
+    background:rgba(255,255,255,0.18);
+    transition:background 0.3s ease;
+  }
+  .progress span.active{ background:linear-gradient(90deg, var(--pink-deep), var(--gold)); }
   .eyebrow{
     letter-spacing:0.35em;
     text-transform:uppercase;
@@ -113,22 +126,21 @@
     border:none;
     transition:transform 0.15s ease, box-shadow 0.15s ease;
   }
-  #yesBtn{
+  .yes-btn{
     background:linear-gradient(135deg, var(--pink-deep), #c2185b);
     color:#fff;
     box-shadow:0 10px 30px -8px rgba(255,93,143,0.55);
   }
-  #yesBtn:hover{ transform:translateY(-2px) scale(1.04); box-shadow:0 14px 34px -6px rgba(255,93,143,0.7); }
-  #noBtn{
+  .yes-btn:hover{ transform:translateY(-2px) scale(1.04); box-shadow:0 14px 34px -6px rgba(255,93,143,0.7); }
+  .no-btn{
     background:rgba(255,255,255,0.08);
     color:var(--cream);
     border:1px solid var(--card-border);
     position:relative;
   }
-  #noBtn.roaming{ position:fixed; z-index:5; }
-  .yes-scale{ font-size: calc(1rem + var(--yesboost, 0) * 0.14rem); padding: calc(0.95rem + var(--yesboost, 0) * 0.12rem) calc(2.4rem + var(--yesboost, 0) * 0.3rem); }
+  .no-btn.roaming{ position:fixed; z-index:5; }
 
-  /* ---- Step 2 : proposal card ---- */
+  /* ---- proposal / checklist card ---- */
   .card{
     display:none;
     width:100%;
@@ -155,8 +167,21 @@
   }
   .card p.lead{
     color:rgba(255,245,238,0.78);
-    margin:0 0 1.8rem;
+    margin:0 0 1.6rem;
     line-height:1.6;
+  }
+  .select-all{
+    display:flex;
+    align-items:center;
+    gap:0.7rem;
+    padding:0.7rem 1rem;
+    margin-bottom:0.9rem;
+    border-radius:14px;
+    border:1px dashed rgba(255,216,168,0.4);
+    cursor:pointer;
+    font-weight:600;
+    font-size:0.92rem;
+    color:var(--gold);
   }
   .checklist{
     display:flex;
@@ -200,11 +225,18 @@
     background:linear-gradient(135deg, var(--pink-deep), var(--gold));
   }
   .check-item input:checked::before{ transform:scale(1); }
-  .check-item input:checked ~ .check-label{ color:var(--cream); }
   .check-item.checked{ border-color:var(--pink-deep); background:rgba(255,93,143,0.12); }
   .check-icon{ font-size:1.3rem; line-height:1; }
   .check-label{ font-size:0.98rem; color:rgba(255,245,238,0.85); }
   .check-label small{ display:block; font-size:0.78rem; color:rgba(255,245,238,0.5); margin-top:2px; }
+  .section-tag{
+    font-size:0.72rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:rgba(255,216,168,0.65);
+    margin:1.4rem 0 0.6rem;
+  }
+  .section-tag:first-of-type{ margin-top:0; }
 
   textarea{
     width:100%;
@@ -272,24 +304,44 @@
 
 <div class="wrap">
 
-  <!-- Step 1: the question -->
+  <!-- Step 1: will you date me -->
   <section class="stage" id="stage1">
+    <div class="progress"><span class="active"></span><span></span><span></span></div>
     <div class="eyebrow">an important question</div>
-    <h1>Will you go out with me?</h1>
+    <h1>Will you date me?</h1>
     <p class="sub">No pressure at all — just something I've been wanting to ask you for a while now. Take your time. 💌</p>
-    <div class="btn-row" id="btnRow">
-      <button id="yesBtn">Yes 💕</button>
-      <button id="noBtn">No</button>
+    <div class="btn-row" id="btnRow1">
+      <button class="yes-btn" id="yesBtn1">Yes 💕</button>
+      <button class="no-btn" id="noBtn1">No</button>
     </div>
   </section>
 
-  <!-- Step 2: proposal card -->
+  <!-- Step 2: do you want us to be together -->
   <section class="stage" id="stage2" style="display:none;">
+    <div class="progress"><span class="active"></span><span class="active"></span><span></span></div>
+    <div class="eyebrow">one more thing</div>
+    <h1>Do you want us to be together?</h1>
+    <p class="sub">Not just a date — I mean actually together. Us. A real thing. If that's a yes, I have something to show you. 🥹</p>
+    <div class="btn-row" id="btnRow2">
+      <button class="yes-btn" id="yesBtn2">Yes, let's be together 💞</button>
+      <button class="no-btn" id="noBtn2">No</button>
+    </div>
+  </section>
+
+  <!-- Step 3: proposal card -->
+  <section class="stage" id="stage3" style="display:none;">
+    <div class="progress"><span class="active"></span><span class="active"></span><span class="active"></span></div>
     <div class="card" id="card" style="display:block;">
       <h2>I'm really glad. ✨</h2>
-      <p class="lead">Here are a few little things I'd love for us to share together — check off whichever ones make you smile too. Everything here is completely up to you, always.</p>
+      <p class="lead">Here's everything I'm hoping we get to share together — check off whatever makes you smile, or just select it all. Every single one, always at your pace, always your call.</p>
 
       <form id="loveForm">
+        <label class="select-all">
+          <input type="checkbox" id="selectAll">
+          Select all — I'm in for everything
+        </label>
+
+        <div class="section-tag">Everyday little things</div>
         <div class="checklist">
           <label class="check-item">
             <input type="checkbox" name="wish" value="Holding hands">
@@ -307,11 +359,6 @@
             <span class="check-label">Sharing food<small>same plate, same spoon</small></span>
           </label>
           <label class="check-item">
-            <input type="checkbox" name="wish" value="A kiss, someday, if it feels right">
-            <span class="check-icon">💋</span>
-            <span class="check-label">A kiss<small>only if and whenever it feels right</small></span>
-          </label>
-          <label class="check-item">
             <input type="checkbox" name="wish" value="Long, aimless walks and talks">
             <span class="check-icon">🌙</span>
             <span class="check-label">Long walks &amp; talks<small>about everything and nothing</small></span>
@@ -320,6 +367,25 @@
             <input type="checkbox" name="wish" value="Movie nights">
             <span class="check-icon">🎬</span>
             <span class="check-label">Movie nights<small>your pick, always</small></span>
+          </label>
+        </div>
+
+        <div class="section-tag">A little closer</div>
+        <div class="checklist">
+          <label class="check-item">
+            <input type="checkbox" name="wish" value="Hugging / cuddling">
+            <span class="check-icon">🤗</span>
+            <span class="check-label">Hugging &amp; cuddling<small>the comfortable, safe kind</small></span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="wish" value="A kiss, whenever it feels right">
+            <span class="check-icon">💋</span>
+            <span class="check-label">A kiss<small>only whenever it feels right to you</small></span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="wish" value="Physical intimacy, at our own pace, only if both of us want it">
+            <span class="check-icon">🔥</span>
+            <span class="check-label">Physical intimacy<small>fully at our own pace, only if we both want it</small></span>
           </label>
         </div>
 
@@ -356,38 +422,51 @@
     heartsEl.appendChild(h);
   }
 
-  // playful dodging "No" button
-  const noBtn = document.getElementById('noBtn');
-  const yesBtn = document.getElementById('yesBtn');
-  const btnRow = document.getElementById('btnRow');
-  let dodges = 0;
-
-  function dodge(){
-    dodges++;
-    const rect = btnRow.getBoundingClientRect();
-    const bw = noBtn.offsetWidth, bh = noBtn.offsetHeight;
-    const maxX = window.innerWidth - bw - 20;
-    const maxY = window.innerHeight - bh - 20;
-    const x = Math.max(20, Math.random()*maxX);
-    const y = Math.max(20, Math.random()*maxY);
-    noBtn.classList.add('roaming');
-    noBtn.style.left = x + 'px';
-    noBtn.style.top = y + 'px';
-    yesBtn.style.setProperty('--yesboost', Math.min(dodges, 6));
-    yesBtn.classList.add('yes-scale');
+  // playful dodging "No" buttons (shared behaviour for both questions)
+  function makeDodge(noBtn, yesBtn, rowEl){
+    let dodges = 0;
+    function dodge(){
+      dodges++;
+      const bw = noBtn.offsetWidth, bh = noBtn.offsetHeight;
+      const maxX = window.innerWidth - bw - 20;
+      const maxY = window.innerHeight - bh - 20;
+      const x = Math.max(20, Math.random()*maxX);
+      const y = Math.max(20, Math.random()*maxY);
+      noBtn.classList.add('roaming');
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+      const scale = Math.min(1 + dodges * 0.06, 1.5);
+      yesBtn.style.transform = 'scale(' + scale + ')';
+    }
+    noBtn.addEventListener('mouseenter', dodge);
+    noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); dodge(); }, {passive:false});
+    noBtn.addEventListener('click', function(e){ e.preventDefault(); dodge(); });
   }
-  noBtn.addEventListener('mouseenter', dodge);
-  noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); dodge(); }, {passive:false});
-  noBtn.addEventListener('click', function(e){ e.preventDefault(); dodge(); });
+  makeDodge(document.getElementById('noBtn1'), document.getElementById('yesBtn1'), document.getElementById('btnRow1'));
+  makeDodge(document.getElementById('noBtn2'), document.getElementById('yesBtn2'), document.getElementById('btnRow2'));
 
-  yesBtn.addEventListener('click', function(){
+  document.getElementById('yesBtn1').addEventListener('click', function(){
     document.getElementById('stage1').style.display = 'none';
     document.getElementById('stage2').style.display = 'flex';
   });
+  document.getElementById('yesBtn2').addEventListener('click', function(){
+    document.getElementById('stage2').style.display = 'none';
+    document.getElementById('stage3').style.display = 'flex';
+  });
 
-  // checklist visual state
-  document.querySelectorAll('.check-item input').forEach(function(cb){
+  // checklist visual state + select-all
+  const wishBoxes = Array.from(document.querySelectorAll('input[name="wish"]'));
+  const selectAll = document.getElementById('selectAll');
+
+  wishBoxes.forEach(function(cb){
     cb.addEventListener('change', function(){
+      cb.closest('.check-item').classList.toggle('checked', cb.checked);
+      selectAll.checked = wishBoxes.every(function(b){ return b.checked; });
+    });
+  });
+  selectAll.addEventListener('change', function(){
+    wishBoxes.forEach(function(cb){
+      cb.checked = selectAll.checked;
       cb.closest('.check-item').classList.toggle('checked', cb.checked);
     });
   });
@@ -403,12 +482,13 @@
     submitBtn.disabled = true;
     statusEl.textContent = 'sending…';
 
-    const checked = Array.from(document.querySelectorAll('input[name="wish"]:checked')).map(function(i){ return i.value; });
+    const checked = wishBoxes.filter(function(i){ return i.checked; }).map(function(i){ return i.value; });
     const message = form.message.value.trim();
 
     const payload = new FormData();
     payload.append('_subject', 'She said yes 💕 — here is what she checked');
-    payload.append('answer', 'YES');
+    payload.append('question_1_will_you_date_me', 'YES');
+    payload.append('question_2_be_together', 'YES');
     payload.append('checked_items', checked.length ? checked.join(', ') : '(none selected)');
     payload.append('message', message || '(no extra message)');
     payload.append('_captcha', 'false');
