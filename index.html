@@ -18,6 +18,7 @@
     --cream:#fff5ee;
     --card:rgba(255,255,255,0.08);
     --card-border:rgba(255,255,255,0.18);
+    --warmth:0;
   }
   *{box-sizing:border-box;}
   html,body{
@@ -31,6 +32,16 @@
     color:var(--cream);
     font-family:'Quicksand', sans-serif;
     overflow-x:hidden;
+    cursor:default;
+  }
+  .warmth-overlay{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background:radial-gradient(circle at 50% 30%, rgba(255,93,143,0.35), transparent 60%);
+    opacity:var(--warmth);
+    transition:opacity 0.5s ease;
   }
   .hearts{
     position:fixed;
@@ -53,6 +64,23 @@
     90%{ opacity:0.5; }
     100%{ transform:translateY(-115vh) translateX(var(--drift,20px)) rotate(360deg); opacity:0; }
   }
+  .trail-heart{
+    position:fixed;
+    pointer-events:none;
+    z-index:9999;
+    font-size:0.9rem;
+    animation:trailFade 0.9s ease forwards;
+  }
+  @keyframes trailFade{
+    0%{ opacity:0.9; transform:translate(-50%,-50%) scale(1); }
+    100%{ opacity:0; transform:translate(-50%,-120%) scale(0.4); }
+  }
+  #confettiCanvas{
+    position:fixed;
+    inset:0;
+    z-index:9998;
+    pointer-events:none;
+  }
   .wrap{
     position:relative;
     z-index:1;
@@ -70,17 +98,15 @@
   }
   .progress{
     display:flex;
-    gap:0.4rem;
+    gap:0.5rem;
     margin-bottom:1.6rem;
   }
   .progress span{
-    width:26px;
-    height:4px;
-    border-radius:99px;
-    background:rgba(255,255,255,0.18);
-    transition:background 0.3s ease;
+    font-size:0.95rem;
+    opacity:0.3;
+    transition:opacity 0.3s ease, transform 0.3s ease;
   }
-  .progress span.active{ background:linear-gradient(90deg, var(--pink-deep), var(--gold)); }
+  .progress span.active{ opacity:1; transform:scale(1.25); }
   .eyebrow{
     letter-spacing:0.35em;
     text-transform:uppercase;
@@ -106,7 +132,16 @@
     color:rgba(255,245,238,0.8);
     max-width:460px;
     margin:0 auto 2.8rem;
+    min-height:1.6em;
   }
+  .sub .cursor-blink{
+    display:inline-block;
+    width:2px;
+    background:var(--gold);
+    margin-left:2px;
+    animation:blink 0.9s step-start infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
   .btn-row{
     display:flex;
     gap:1.2rem;
@@ -139,6 +174,122 @@
     position:relative;
   }
   .no-btn.roaming{ position:fixed; z-index:5; }
+  .no-caption{
+    position:fixed;
+    z-index:6;
+    font-size:0.8rem;
+    color:var(--gold);
+    background:rgba(0,0,0,0.55);
+    padding:0.3rem 0.7rem;
+    border-radius:999px;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 0.2s ease;
+    white-space:nowrap;
+  }
+  .no-caption.show{ opacity:1; }
+
+  /* ---- envelope intro ---- */
+  .envelope{
+    width:220px;
+    height:150px;
+    margin:0 auto 2rem;
+    position:relative;
+    cursor:pointer;
+  }
+  .envelope-body{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(160deg, #fff5ee, #ffd8e4);
+    border-radius:10px;
+    box-shadow:0 20px 45px -15px rgba(0,0,0,0.5);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:2rem;
+    transition:transform 0.4s ease;
+  }
+  .envelope-flap{
+    position:absolute;
+    top:0; left:0; right:0;
+    height:0;
+    border-left:110px solid transparent;
+    border-right:110px solid transparent;
+    border-top:75px solid #ffb8cc;
+    transform-origin:top;
+    transition:transform 0.5s ease;
+    z-index:2;
+  }
+  .envelope.open .envelope-flap{ transform:rotateX(180deg); }
+  .envelope.open .envelope-body{ transform:translateY(6px) scale(1.03); }
+  .envelope-hint{
+    font-size:0.85rem;
+    color:rgba(255,245,238,0.6);
+    margin-top:0.5rem;
+  }
+
+  /* ---- reasons carousel ---- */
+  .carousel{
+    width:100%;
+    max-width:420px;
+    margin:0 auto;
+  }
+  .carousel-track{
+    position:relative;
+    min-height:170px;
+  }
+  .reason-card{
+    position:absolute;
+    inset:0;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    padding:2rem 1.6rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-size:1.25rem;
+    color:var(--cream);
+    opacity:0;
+    transform:translateX(30px);
+    transition:opacity 0.4s ease, transform 0.4s ease;
+    pointer-events:none;
+    backdrop-filter:blur(10px);
+  }
+  .reason-card.active{
+    opacity:1;
+    transform:translateX(0);
+    pointer-events:auto;
+  }
+  .carousel-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:1.4rem;
+    margin-top:1.4rem;
+  }
+  .dot-row{ display:flex; gap:0.4rem; }
+  .dot-row span{
+    width:7px; height:7px; border-radius:50%;
+    background:rgba(255,255,255,0.25);
+    transition:background 0.2s ease, transform 0.2s ease;
+  }
+  .dot-row span.active{ background:var(--gold); transform:scale(1.3); }
+  .circle-btn{
+    width:42px; height:42px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    border:1px solid var(--card-border);
+    color:var(--cream);
+    font-size:1.1rem;
+    display:grid;
+    place-content:center;
+    padding:0;
+  }
+  .continue-btn{ margin-top:2rem; }
 
   /* ---- proposal / checklist card ---- */
   .card{
@@ -151,11 +302,14 @@
     backdrop-filter:blur(14px);
     -webkit-backdrop-filter:blur(14px);
     box-shadow:0 20px 60px -20px rgba(0,0,0,0.5);
-    animation:rise 0.6s ease;
+    transform:scale(0.9) rotateX(-25deg);
+    opacity:0;
+    transform-origin:top center;
+    transition:transform 0.6s cubic-bezier(.2,.9,.3,1.2), opacity 0.5s ease;
   }
-  @keyframes rise{
-    from{ opacity:0; transform:translateY(24px); }
-    to{ opacity:1; transform:translateY(0); }
+  .card.open{
+    transform:scale(1) rotateX(0deg);
+    opacity:1;
   }
   .card h2{
     font-family:'Playfair Display', serif;
@@ -167,8 +321,21 @@
   }
   .card p.lead{
     color:rgba(255,245,238,0.78);
-    margin:0 0 1.6rem;
+    margin:0 0 1rem;
     line-height:1.6;
+  }
+  .note-box{
+    background:rgba(255,216,168,0.08);
+    border:1px dashed rgba(255,216,168,0.35);
+    border-radius:16px;
+    padding:1rem 1.2rem;
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-size:0.95rem;
+    line-height:1.6;
+    color:rgba(255,245,238,0.85);
+    margin-bottom:1.6rem;
+    text-align:left;
   }
   .select-all{
     display:flex;
@@ -199,7 +366,7 @@
     border-radius:14px;
     padding:0.85rem 1rem;
     cursor:pointer;
-    transition:background 0.2s ease, border-color 0.2s ease;
+    transition:background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   }
   .check-item:hover{ background:rgba(255,255,255,0.09); }
   .check-item input{
@@ -225,7 +392,7 @@
     background:linear-gradient(135deg, var(--pink-deep), var(--gold));
   }
   .check-item input:checked::before{ transform:scale(1); }
-  .check-item.checked{ border-color:var(--pink-deep); background:rgba(255,93,143,0.12); }
+  .check-item.checked{ border-color:var(--pink-deep); background:rgba(255,93,143,0.12); transform:scale(1.015); }
   .check-icon{ font-size:1.3rem; line-height:1; }
   .check-label{ font-size:0.98rem; color:rgba(255,245,238,0.85); }
   .check-label small{ display:block; font-size:0.78rem; color:rgba(255,245,238,0.5); margin-top:2px; }
@@ -277,7 +444,8 @@
     display:none;
     text-align:center;
   }
-  .thanks .big-emoji{ font-size:3.4rem; margin-bottom:1rem; }
+  .thanks .big-emoji{ font-size:3.4rem; margin-bottom:1rem; animation:pop 0.6s ease; }
+  @keyframes pop{ 0%{ transform:scale(0); } 60%{ transform:scale(1.2); } 100%{ transform:scale(1); } }
   .thanks h2{
     font-family:'Playfair Display', serif;
     font-size:2rem;
@@ -291,7 +459,17 @@
     font-size:0.75rem;
     color:rgba(255,245,238,0.35);
     padding-bottom:2rem;
+    user-select:none;
   }
+  .egg-msg{
+    max-width:420px;
+    margin:0.8rem auto 0;
+    font-size:0.8rem;
+    color:var(--gold);
+    opacity:0;
+    transition:opacity 0.4s ease;
+  }
+  .egg-msg.show{ opacity:1; }
 
   @media (max-width:480px){
     .btn-row{ flex-direction:column; }
@@ -300,16 +478,42 @@
 </head>
 <body>
 
+<canvas id="confettiCanvas"></canvas>
+<div class="warmth-overlay" id="warmthOverlay"></div>
 <div class="hearts" id="hearts"></div>
 
 <div class="wrap">
 
+  <!-- Step 0: envelope intro -->
+  <section class="stage" id="stage0">
+    <div class="envelope" id="envelope">
+      <div class="envelope-flap"></div>
+      <div class="envelope-body">💌</div>
+    </div>
+    <h1 style="font-size:1.6rem;">You've got a little something<span id="nameSlot0"></span></h1>
+    <p class="envelope-hint">tap the envelope to open it</p>
+  </section>
+
+  <!-- Step 0.5: reasons carousel -->
+  <section class="stage" id="stageReasons" style="display:none;">
+    <div class="eyebrow">a few reasons, before I ask</div>
+    <div class="carousel">
+      <div class="carousel-track" id="reasonTrack"></div>
+      <div class="carousel-nav">
+        <button class="circle-btn" id="prevReason" aria-label="previous">‹</button>
+        <div class="dot-row" id="reasonDots"></div>
+        <button class="circle-btn" id="nextReason" aria-label="next">›</button>
+      </div>
+    </div>
+    <button class="yes-btn continue-btn" id="continueBtn">Okay, ask me already 😊</button>
+  </section>
+
   <!-- Step 1: will you date me -->
-  <section class="stage" id="stage1">
-    <div class="progress"><span class="active"></span><span></span><span></span></div>
+  <section class="stage" id="stage1" style="display:none;">
+    <div class="progress"><span class="active">💗</span><span>🤍</span><span>🤍</span></div>
     <div class="eyebrow">an important question</div>
-    <h1>Will you date me?</h1>
-    <p class="sub">No pressure at all — just something I've been wanting to ask you for a while now. Take your time. 💌</p>
+    <h1 id="q1Heading">Will you date me<span id="nameSlot1"></span>?</h1>
+    <p class="sub" id="q1Sub"></p>
     <div class="btn-row" id="btnRow1">
       <button class="yes-btn" id="yesBtn1">Yes 💕</button>
       <button class="no-btn" id="noBtn1">No</button>
@@ -318,7 +522,7 @@
 
   <!-- Step 2: do you want us to be together -->
   <section class="stage" id="stage2" style="display:none;">
-    <div class="progress"><span class="active"></span><span class="active"></span><span></span></div>
+    <div class="progress"><span class="active">💗</span><span class="active">💗</span><span>🤍</span></div>
     <div class="eyebrow">one more thing</div>
     <h1>Do you want us to be together?</h1>
     <p class="sub">Not just a date — I mean actually together. Us. A real thing. If that's a yes, I have something to show you. 🥹</p>
@@ -330,10 +534,14 @@
 
   <!-- Step 3: proposal card -->
   <section class="stage" id="stage3" style="display:none;">
-    <div class="progress"><span class="active"></span><span class="active"></span><span class="active"></span></div>
-    <div class="card" id="card" style="display:block;">
+    <div class="progress"><span class="active">💗</span><span class="active">💗</span><span class="active">💗</span></div>
+    <div class="card" id="card">
       <h2>I'm really glad. ✨</h2>
       <p class="lead">Here's everything I'm hoping we get to share together — check off whatever makes you smile, or just select it all. Every single one, always at your pace, always your call.</p>
+
+      <div class="note-box">
+        "I wasn't planning on feeling this way about anyone, and then I met you. I like who I am when I'm around you, and I'd really like to find out where this goes — together."
+      </div>
 
       <form id="loveForm">
         <label class="select-all">
@@ -398,16 +606,28 @@
 
     <div class="thanks" id="thanks">
       <div class="big-emoji">🥹💗</div>
-      <h2>Got it. Thank you.</h2>
+      <h2 id="thanksHeading">Got it. Thank you.</h2>
       <p>Whatever you chose, I'm really happy you're here. I'll talk to you soon.</p>
     </div>
   </section>
 
-  <footer>made with a nervous heart</footer>
+  <footer id="footerEgg">made with a nervous heart
+    <div class="egg-msg" id="eggMsg">psst — you found the secret message: I really, really like you. 🤫💗</div>
+  </footer>
 </div>
 
 <script>
-  // floating hearts background
+  /* ---------- name personalization via ?name=Something ---------- */
+  const params = new URLSearchParams(location.search);
+  const rawName = params.get('name');
+  const name = rawName ? rawName.charAt(0).toUpperCase() + rawName.slice(1) : '';
+  if(name){
+    document.getElementById('nameSlot0').textContent = ', ' + name;
+    document.getElementById('nameSlot1').textContent = ', ' + name;
+    document.getElementById('thanksHeading').textContent = 'Got it, ' + name + '. Thank you.';
+  }
+
+  /* ---------- floating hearts background ---------- */
   const heartsEl = document.getElementById('hearts');
   const glyphs = ['💗','💕','🤍','💫','✨'];
   for(let i=0;i<26;i++){
@@ -422,8 +642,103 @@
     heartsEl.appendChild(h);
   }
 
-  // playful dodging "No" buttons (shared behaviour for both questions)
-  function makeDodge(noBtn, yesBtn, rowEl){
+  /* ---------- cursor heart trail ---------- */
+  let lastTrail = 0;
+  document.addEventListener('mousemove', function(e){
+    const now = Date.now();
+    if(now - lastTrail < 70) return;
+    lastTrail = now;
+    const t = document.createElement('span');
+    t.className = 'trail-heart';
+    t.textContent = glyphs[Math.floor(Math.random()*3)];
+    t.style.left = e.clientX + 'px';
+    t.style.top = e.clientY + 'px';
+    document.body.appendChild(t);
+    setTimeout(function(){ t.remove(); }, 900);
+  });
+
+  /* ---------- envelope intro ---------- */
+  const envelope = document.getElementById('envelope');
+  envelope.addEventListener('click', function(){
+    envelope.classList.add('open');
+    setTimeout(function(){
+      document.getElementById('stage0').style.display = 'none';
+      document.getElementById('stageReasons').style.display = 'flex';
+      startReasons();
+    }, 550);
+  });
+
+  /* ---------- reasons carousel ---------- */
+  const reasons = [
+    "You make ordinary days feel like a good day just because you were part of it.",
+    "I like how easy it is to just talk to you, about anything.",
+    "You get my sense of humor — and that matters more than I can explain.",
+    "Every time we talk, I catch myself looking forward to the next time.",
+    "You're kind in a way that feels effortless, not performed.",
+    "Honestly? I just really like being around you."
+  ];
+  const track = document.getElementById('reasonTrack');
+  const dotsRow = document.getElementById('reasonDots');
+  reasons.forEach(function(text, i){
+    const c = document.createElement('div');
+    c.className = 'reason-card' + (i===0 ? ' active' : '');
+    c.textContent = '"' + text + '"';
+    track.appendChild(c);
+    const d = document.createElement('span');
+    if(i===0) d.className = 'active';
+    dotsRow.appendChild(d);
+  });
+  let reasonIndex = 0;
+  let reasonTimer = null;
+  function showReason(i){
+    const cards = track.querySelectorAll('.reason-card');
+    const dots = dotsRow.querySelectorAll('span');
+    cards[reasonIndex].classList.remove('active');
+    dots[reasonIndex].classList.remove('active');
+    reasonIndex = (i + cards.length) % cards.length;
+    cards[reasonIndex].classList.add('active');
+    dots[reasonIndex].classList.add('active');
+  }
+  document.getElementById('nextReason').addEventListener('click', function(){ showReason(reasonIndex+1); resetAutoplay(); });
+  document.getElementById('prevReason').addEventListener('click', function(){ showReason(reasonIndex-1); resetAutoplay(); });
+  function resetAutoplay(){
+    clearInterval(reasonTimer);
+    reasonTimer = setInterval(function(){ showReason(reasonIndex+1); }, 4200);
+  }
+  function startReasons(){ resetAutoplay(); }
+
+  document.getElementById('continueBtn').addEventListener('click', function(){
+    clearInterval(reasonTimer);
+    document.getElementById('stageReasons').style.display = 'none';
+    document.getElementById('stage1').style.display = 'flex';
+    typeIntro();
+  });
+
+  /* ---------- typing effect for Q1 subheading ---------- */
+  function typeIntro(){
+    const el = document.getElementById('q1Sub');
+    if(el.dataset.typed) return;
+    el.dataset.typed = '1';
+    const full = "No pressure at all — just something I've been wanting to ask you for a while now. Take your time. 💌";
+    let i = 0;
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor-blink';
+    function step(){
+      el.textContent = full.slice(0, i);
+      el.appendChild(cursor);
+      i++;
+      if(i <= full.length){ setTimeout(step, 22); }
+    }
+    step();
+  }
+
+  /* ---------- playful dodging "No" buttons with captions ---------- */
+  const captions = ["nice try 😏","almost had it","not today","keep trying 😌","nope, still no","you'll have to catch me first"];
+  const captionEl = document.createElement('div');
+  captionEl.className = 'no-caption';
+  document.body.appendChild(captionEl);
+
+  function makeDodge(noBtn, yesBtn){
     let dodges = 0;
     function dodge(){
       dodges++;
@@ -437,13 +752,21 @@
       noBtn.style.top = y + 'px';
       const scale = Math.min(1 + dodges * 0.06, 1.5);
       yesBtn.style.transform = 'scale(' + scale + ')';
+
+      captionEl.textContent = captions[Math.floor(Math.random()*captions.length)];
+      captionEl.style.left = (x + bw/2) + 'px';
+      captionEl.style.top = (y - 28) + 'px';
+      captionEl.style.transform = 'translateX(-50%)';
+      captionEl.classList.add('show');
+      clearTimeout(captionEl._t);
+      captionEl._t = setTimeout(function(){ captionEl.classList.remove('show'); }, 900);
     }
     noBtn.addEventListener('mouseenter', dodge);
     noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); dodge(); }, {passive:false});
     noBtn.addEventListener('click', function(e){ e.preventDefault(); dodge(); });
   }
-  makeDodge(document.getElementById('noBtn1'), document.getElementById('yesBtn1'), document.getElementById('btnRow1'));
-  makeDodge(document.getElementById('noBtn2'), document.getElementById('yesBtn2'), document.getElementById('btnRow2'));
+  makeDodge(document.getElementById('noBtn1'), document.getElementById('yesBtn1'));
+  makeDodge(document.getElementById('noBtn2'), document.getElementById('yesBtn2'));
 
   document.getElementById('yesBtn1').addEventListener('click', function(){
     document.getElementById('stage1').style.display = 'none';
@@ -452,16 +775,25 @@
   document.getElementById('yesBtn2').addEventListener('click', function(){
     document.getElementById('stage2').style.display = 'none';
     document.getElementById('stage3').style.display = 'flex';
+    requestAnimationFrame(function(){
+      document.getElementById('card').classList.add('open');
+    });
   });
 
-  // checklist visual state + select-all
+  /* ---------- checklist: select-all + warmth background ---------- */
   const wishBoxes = Array.from(document.querySelectorAll('input[name="wish"]'));
   const selectAll = document.getElementById('selectAll');
+  const warmthOverlay = document.getElementById('warmthOverlay');
 
+  function updateWarmth(){
+    const checkedCount = wishBoxes.filter(function(b){ return b.checked; }).length;
+    document.documentElement.style.setProperty('--warmth', Math.min(checkedCount / wishBoxes.length, 1) * 0.9);
+  }
   wishBoxes.forEach(function(cb){
     cb.addEventListener('change', function(){
       cb.closest('.check-item').classList.toggle('checked', cb.checked);
       selectAll.checked = wishBoxes.every(function(b){ return b.checked; });
+      updateWarmth();
     });
   });
   selectAll.addEventListener('change', function(){
@@ -469,9 +801,66 @@
       cb.checked = selectAll.checked;
       cb.closest('.check-item').classList.toggle('checked', cb.checked);
     });
+    updateWarmth();
   });
 
-  // submit -> formsubmit.co (ajax, no page reload)
+  /* ---------- confetti burst ---------- */
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function burstConfetti(){
+    const colors = ['#ff5d8f','#ffd8a8','#ff8fab','#fff5ee','#c2185b'];
+    const pieces = [];
+    for(let i=0;i<140;i++){
+      pieces.push({
+        x: canvas.width/2,
+        y: canvas.height/2,
+        vx: (Math.random()-0.5) * 14,
+        vy: (Math.random()-1.2) * 14,
+        size: 4 + Math.random()*6,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        rot: Math.random()*Math.PI*2,
+        vr: (Math.random()-0.5) * 0.3,
+        shape: Math.random() > 0.5 ? 'heart' : 'square',
+        life: 0
+      });
+    }
+    let frame = 0;
+    function tick(){
+      frame++;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      let alive = false;
+      pieces.forEach(function(p){
+        p.life++;
+        if(p.life > 130) return;
+        alive = true;
+        p.vy += 0.32;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, 1 - p.life/130);
+        if(p.shape === 'heart'){
+          ctx.font = p.size*2.4 + 'px serif';
+          ctx.fillText('♥', -p.size, p.size);
+        } else {
+          ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+        }
+        ctx.restore();
+      });
+      if(alive) requestAnimationFrame(tick);
+      else ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+    tick();
+  }
+
+  /* ---------- submit -> formsubmit.co (ajax) ---------- */
   const form = document.getElementById('loveForm');
   const statusEl = document.getElementById('status');
   const submitBtn = document.getElementById('submitBtn');
@@ -487,6 +876,7 @@
 
     const payload = new FormData();
     payload.append('_subject', 'She said yes 💕 — here is what she checked');
+    payload.append('from_name', name || '(no name given)');
     payload.append('question_1_will_you_date_me', 'YES');
     payload.append('question_2_be_together', 'YES');
     payload.append('checked_items', checked.length ? checked.join(', ') : '(none selected)');
@@ -504,10 +894,26 @@
     }).then(function(){
       document.getElementById('card').style.display = 'none';
       document.getElementById('thanks').style.display = 'block';
+      burstConfetti();
+      setTimeout(burstConfetti, 500);
     }).catch(function(){
       statusEl.textContent = "Hmm, that didn't send — mind trying once more?";
       submitBtn.disabled = false;
     });
+  });
+
+  /* ---------- easter egg: triple-click footer ---------- */
+  const footerEgg = document.getElementById('footerEgg');
+  const eggMsg = document.getElementById('eggMsg');
+  let clickCount = 0, clickTimer = null;
+  footerEgg.addEventListener('click', function(){
+    clickCount++;
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(function(){ clickCount = 0; }, 600);
+    if(clickCount >= 3){
+      eggMsg.classList.add('show');
+      clickCount = 0;
+    }
   });
 </script>
 
