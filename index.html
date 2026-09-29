@@ -298,6 +298,12 @@
         <div class="tag y">yes ♥</div><div class="tag n">no</div>
       </div>
 
+      <div class="q" data-key="q_reels">
+        <p>Can I share romantic reels with you — the intimate ones too — and memes, everything?</p>
+        <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
+        <div class="tag y">yes ♥</div><div class="tag n">no</div>
+      </div>
+
       <div class="q" data-key="q_time">
         <p class="serif" style="font-size:1.14rem;color:#ffe1ec;">I just need your time. Can we?</p>
         <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
@@ -383,7 +389,7 @@
 (function(){
   "use strict";
   var FORM_ENDPOINT = 'https://formsubmit.co/ajax/harshgupta25012002@gmail.com';
-  var answers = { name:'Mam', q_friend:'', q_chance:'', q_fwb:'', q_time:'', q_nevergiveup:'', date:'', time:'', place:'', message:'' };
+  var answers = { name:'Mam', q_friend:'', q_chance:'', q_fwb:'', q_reels:'', q_time:'', q_nevergiveup:'', date:'', time:'', place:'', message:'' };
 
   var $  = function(s,c){ return (c||document).querySelector(s); };
   var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
@@ -552,6 +558,7 @@
       'Q  will you be my friend':       answers.q_friend,
       'Q  give us a chance':            answers.q_chance,
       'Q  can we be FWB':               answers.q_fwb,
+      'Q  share romantic reels + memes': answers.q_reels,
       'Q  just need your time':         answers.q_time,
       'Q  never give up on each other': answers.q_nevergiveup,
       'Plan  date':  answers.date,
