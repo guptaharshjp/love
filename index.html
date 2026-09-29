@@ -317,7 +317,8 @@
 <script>
 (function(){
   "use strict";
-  var FORM_ENDPOINT = 'https://formsubmit.co/ajax/harshgupta25012002@gmail.com';
+  var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+  var ACCESS_KEY = '90500db2-9996-439f-a0f9-f9d5c2e0e7e8';
   var answers = { q_friend:'', q_chance:'', q_fwb:'', q_reels:'', q_time:'' };
 
   var $  = function(s,c){ return (c||document).querySelector(s); };
@@ -386,34 +387,17 @@
     burst(r.left+r.width/2, r.top+r.height/2, big);
   }
 
-  /* email */
-  function toFormData(payloadObj, subject){
-    var fd=new FormData();
-    fd.append('_subject', subject);
-    fd.append('_captcha','false');
-    fd.append('_template','box');
-    Object.keys(payloadObj).forEach(function(k){ fd.append(k, payloadObj[k]===''||payloadObj[k]==null ? '—' : payloadObj[k]); });
-    return fd;
-  }
+  /* email (Web3Forms — replies in ~1s) */
   function send(payloadObj, subject){
+    var body={ access_key:ACCESS_KEY, subject:subject, from_name:'for you, Mam' };
+    Object.keys(payloadObj).forEach(function(k){ body[k] = payloadObj[k]===''||payloadObj[k]==null ? '—' : payloadObj[k]; });
     var ctrl = window.AbortController ? new AbortController() : null;
-    var timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 30000);
-    return fetch(FORM_ENDPOINT,{ method:'POST', headers:{'Accept':'application/json'}, body:toFormData(payloadObj, subject), signal: ctrl?ctrl.signal:undefined })
+    var timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 15000);
+    return fetch(FORM_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+                                 body:JSON.stringify(body), signal: ctrl?ctrl.signal:undefined })
       .then(function(res){ return res.json(); })
-      .then(function(j){ clearTimeout(timer); if(String(j.success)!=='true') throw new Error(j.message||'failed'); return j; },
+      .then(function(j){ clearTimeout(timer); if(!j.success) throw new Error(j.message||'failed'); return j; },
             function(err){ clearTimeout(timer); throw err; });
-  }
-  // fallback: classic form post (full page), comes back with ?sent=1
-  function sendClassic(payloadObj, subject){
-    var f=document.createElement('form');
-    f.method='POST'; f.action=FORM_ENDPOINT.replace('/ajax/','/');
-    var fd=toFormData(payloadObj, subject);
-    fd.append('_next', location.origin+location.pathname+'?sent=1');
-    fd.forEach(function(v,k){ var i=document.createElement('input'); i.type='hidden'; i.name=k; i.value=v; f.appendChild(i); });
-    document.body.appendChild(f); f.submit();
-  }
-  if(/[?&]sent=1/.test(location.search)){
-    setTimeout(function(){ show('s-thanks'); }, 50);
   }
 
   /* flow */
@@ -462,16 +446,12 @@
       'Her message': form.message.value.trim(),
       when: new Date().toLocaleString()
     };
-    var subj='Mam answered — full reply inside';
-    var slow=setTimeout(function(){ statusEl.textContent='still sending… just a few more seconds'; }, 8000);
-    send(payload, subj).then(function(){
-      clearTimeout(slow);
+    send(payload, 'Mam answered — full reply inside').then(function(){
       show('s-thanks');
       burstFrom($('#s-thanks .card'), true);
     }).catch(function(){
-      clearTimeout(slow);
-      statusEl.textContent='one moment…';
-      sendClassic(payload, subj);
+      statusEl.textContent = "that didn't send — please try once more?";
+      submitBtn.disabled=false;
     });
   });
 })();
