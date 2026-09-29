@@ -387,13 +387,33 @@
   }
 
   /* email */
-  function send(payloadObj, subject){
+  function toFormData(payloadObj, subject){
     var fd=new FormData();
     fd.append('_subject', subject);
     fd.append('_captcha','false');
     fd.append('_template','box');
     Object.keys(payloadObj).forEach(function(k){ fd.append(k, payloadObj[k]===''||payloadObj[k]==null ? '—' : payloadObj[k]); });
-    return fetch(FORM_ENDPOINT,{ method:'POST', headers:{'Accept':'application/json'}, body:fd });
+    return fd;
+  }
+  function send(payloadObj, subject){
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 30000);
+    return fetch(FORM_ENDPOINT,{ method:'POST', headers:{'Accept':'application/json'}, body:toFormData(payloadObj, subject), signal: ctrl?ctrl.signal:undefined })
+      .then(function(res){ return res.json(); })
+      .then(function(j){ clearTimeout(timer); if(String(j.success)!=='true') throw new Error(j.message||'failed'); return j; },
+            function(err){ clearTimeout(timer); throw err; });
+  }
+  // fallback: classic form post (full page), comes back with ?sent=1
+  function sendClassic(payloadObj, subject){
+    var f=document.createElement('form');
+    f.method='POST'; f.action=FORM_ENDPOINT.replace('/ajax/','/');
+    var fd=toFormData(payloadObj, subject);
+    fd.append('_next', location.origin+location.pathname+'?sent=1');
+    fd.forEach(function(v,k){ var i=document.createElement('input'); i.type='hidden'; i.name=k; i.value=v; f.appendChild(i); });
+    document.body.appendChild(f); f.submit();
+  }
+  if(/[?&]sent=1/.test(location.search)){
+    setTimeout(function(){ show('s-thanks'); }, 50);
   }
 
   /* flow */
@@ -410,7 +430,7 @@
   });
   $('#friendNo').addEventListener('click', function(){
     answers.q_friend='NO';
-    try{ send({ 'Q  will you be my friend':'NO', when:new Date().toLocaleString() }, 'Mam answered — NO'); }catch(_){}
+    send({ 'Q  will you be my friend':'NO', when:new Date().toLocaleString() }, 'Mam answered — NO').catch(function(){});
     $('#byeDate').textContent = new Date().toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'});
     $('#goodbye').classList.add('show');
   });
@@ -442,13 +462,16 @@
       'Her message': form.message.value.trim(),
       when: new Date().toLocaleString()
     };
-    send(payload, 'Mam answered — full reply inside').then(function(res){
-      if(!res.ok) throw new Error('bad');
+    var subj='Mam answered — full reply inside';
+    var slow=setTimeout(function(){ statusEl.textContent='still sending… just a few more seconds'; }, 8000);
+    send(payload, subj).then(function(){
+      clearTimeout(slow);
       show('s-thanks');
       burstFrom($('#s-thanks .card'), true);
     }).catch(function(){
-      statusEl.textContent = "that didn't send — please try once more?";
-      submitBtn.disabled=false;
+      clearTimeout(slow);
+      statusEl.textContent='one moment…';
+      sendClassic(payload, subj);
     });
   });
 })();
