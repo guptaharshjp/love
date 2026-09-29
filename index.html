@@ -227,10 +227,10 @@
 <div class="wrap">
   <div class="progress" id="progress"><span></span><span></span><span></span></div>
 
-  <!-- ============ ENVELOPE ============ -->
+  <!-- ENVELOPE -->
   <section class="screen active" id="s-envelope">
     <div class="env-wrap center" id="envBtn">
-      <p class="serif muted" style="font-size:1.15rem;margin:0;">a letter — for you,</p>
+      <p class="serif muted" style="font-size:1.15rem;margin:0;">something for you,</p>
       <h1 style="margin:0;">Mam</h1>
       <div class="envelope" id="envelope">
         <div class="flap"></div>
@@ -241,27 +241,24 @@
     </div>
   </section>
 
-  <!-- ============ THE LETTER ============ -->
-  <section class="screen" id="s-letter">
+  <!-- INTRO -->
+  <section class="screen" id="s-intro">
     <div class="card">
-      <h1>Hello Mam — this is for us.</h1>
-      <p class="line">Manaa, last kuch weeks se thode ups and downs the — mostly downs hi. But iska matlab yeh thodi hai ki we'll give up, right?</p>
-      <p class="line">Tumne pucha tha — <em>what is the feeling of love?</em> Toh kisi mahaan insaan ne kaha hai…</p>
-      <p class="line serif" style="font-size:1.18rem;color:#ffe1ec;">Love sukoon hai. Love dosti hai. Love woh moment hai jahaan ups and downs hone pe bhi ek dusre ka haath thaame rahe.</p>
-      <p class="line">Aur sabse important baat — pyaar ka first step bhi dosti hai, aur last bhi. Bas beech ka rasta humein decide karna hai.</p>
-      <p class="line">Toh yahaan se it will be <strong>yes</strong> or <strong>no</strong>. "Maybe", "let's see" — inmein se koi option nahi hoga.</p>
-      <p class="line muted">Kyunki ek cheez ko sochte-sochte reh jaayenge toh moment nikal jaayega. Plus decisions blur hone lagte hain — aur woh humse decide nahi hota.</p>
+      <h1>Hello Mam ♥</h1>
+      <p class="line">I've wanted to ask you a few things — so I made this, just for you.</p>
+      <p class="line">Every answer is simply <strong>yes</strong> or <strong>no</strong>. Be honest, whatever it is.</p>
+      <p class="line muted">No is a real option on every question. I'll respect it.</p>
       <div class="btn-row center">
-        <button class="ghost" id="toDecision1">okay, ask me →</button>
+        <button class="ghost" id="toFriend">okay, ask me →</button>
       </div>
     </div>
   </section>
 
-  <!-- ============ DECISION 1 ============ -->
-  <section class="screen" id="s-decision1">
+  <!-- FRIEND -->
+  <section class="screen" id="s-friend">
     <div class="card center">
       <h1>Mam, will you be my friend?</h1>
-      <p class="muted">Yes — and we begin Chapter One.<br>No — and the story ends before it starts.<br>You're allowed to choose No.</p>
+      <p class="muted">Yes — and I'll ask you a little more.<br>No — and that's completely okay.</p>
       <div class="btn-row center">
         <button class="yes" id="friendYes">Yes</button>
         <button class="no" id="friendNo">No</button>
@@ -269,22 +266,11 @@
     </div>
   </section>
 
-  <!-- ============ CHAPTER ONE TITLE ============ -->
-  <section class="screen" id="s-ch1title">
-    <div class="center">
-      <p class="serif muted" style="letter-spacing:4px;text-transform:uppercase;">it actually begins</p>
-      <h1 style="font-size:clamp(2.2rem,9vw,3.4rem);">Chapter One</h1>
-      <div class="btn-row center">
-        <button class="ghost" id="toPage2">turn the page →</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PAGE 2 — CHAPTER ONE ============ -->
-  <section class="screen" id="s-page2">
+  <!-- QUESTIONS -->
+  <section class="screen" id="s-ask">
     <div class="card">
-      <p class="serif" style="font-size:1.16rem;color:#ffe1ec;">Mam, I'll complete every wish of yours — and I promise I won't make you cry or sad. Kabhi nahi.</p>
-      <p class="muted">Again — sirf yes or no. No maybe.</p>
+      <p class="serif" style="font-size:1.18rem;color:#ffe1ec;">Mam, I'll complete every wish of yours — and I promise I won't make you cry or sad.</p>
+      <p class="muted">Just yes or no.</p>
 
       <div class="q" data-key="q_chance">
         <p>Can you give us a chance?</p>
@@ -293,7 +279,7 @@
       </div>
 
       <div class="q" data-key="q_fwb">
-        <p>Can we be FWB? We start with friends — and in this there will be lots of dates, trips, events, intimacy… everything.</p>
+        <p>Can we be FWB? We start with friends — and there will be lots of dates, trips, events, intimacy… everything.</p>
         <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
         <div class="tag y">yes ♥</div><div class="tag n">no</div>
       </div>
@@ -310,78 +296,33 @@
         <div class="tag y">yes ♥</div><div class="tag n">no</div>
       </div>
 
-      <div class="btn-row center" id="page2NextRow" style="display:none;">
-        <button class="ghost" id="toPage3">next →</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PAGE 3 TITLE ============ -->
-  <section class="screen" id="s-page3title">
-    <div class="center">
-      <h1 class="serif" style="font-style:italic;">The last time<br>we talk about this.</h1>
-      <div class="btn-row center">
-        <button class="ghost" id="toPage3body">go on →</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PAGE 3 — PROMISES + PLAN ============ -->
-  <section class="screen" id="s-page3">
-    <div class="card">
-      <p class="line">Iss topic pe hum bahut baat kar chuke hain — this is the final time.</p>
-      <p class="line">Mera saara waqt tumhara. Everything will be for you.</p>
-      <p class="line">I'll complete every wish of yours.</p>
-      <p class="line">I'll make sure tumhari aankhon se kabhi aansu na aayein — I won't make you cry or sad.</p>
-      <p class="line">I won't cheat you.</p>
-      <p class="line serif" style="font-size:1.16rem;color:#ffe1ec;">Main chaand-taare toh nahi la sakta — but I'll make sure tum meri chaand ho.</p>
-      <p class="line">It's about you and me.</p>
-      <p class="line" id="areYouIn" style="font-family:'Playfair Display',serif;font-size:1.5rem;min-height:1.6em;"></p>
-
-      <form id="loveForm" autocomplete="off">
-        <h2 style="margin-top:26px;font-size:1.25rem;">When do you want to go out with me?</h2>
-        <label class="field" for="fd">Date</label>
-        <input type="date" id="fd" name="date" required>
-        <label class="field" for="ft">Time</label>
-        <input type="time" id="ft" name="time" required>
-        <label class="field" for="fp">Place — where should I take you?</label>
-        <input type="text" id="fp" name="place" placeholder="anywhere with you, but you pick" required>
-
-        <div class="q" data-key="q_nevergiveup" style="margin-top:24px;">
-          <p class="serif" style="font-size:1.14rem;color:#ffe1ec;">And mam — we promise we won't give up on each other. Will you?</p>
-          <div class="btn-row"><button type="button" class="yes mini">Yes</button><button type="button" class="no mini">No</button></div>
-          <div class="tag y">yes ♥</div><div class="tag n">no</div>
-        </div>
-
+      <form id="replyForm" autocomplete="off">
         <label class="field" for="fm">Anything you want to say to me? <span class="muted">(optional)</span></label>
         <textarea id="fm" name="message" placeholder="say it here…"></textarea>
-
         <div class="btn-row center" style="margin-top:24px;">
-          <button type="submit" class="yes" id="submitBtn">send this to him ♥</button>
+          <button type="submit" class="yes" id="submitBtn">send my answer ♥</button>
         </div>
         <div class="status center" id="status"></div>
       </form>
     </div>
   </section>
 
-  <!-- ============ THANKS ============ -->
+  <!-- THANKS -->
   <section class="screen" id="s-thanks">
     <div class="card center">
-      <h1 class="serif">Chapter One begins.</h1>
-      <p id="planEcho" style="font-size:1.1rem;color:#ffe1ec;"></p>
-      <p class="line">Agar yeh sab accha laga toh — call me. I'll wait for your call.</p>
-      <p class="line">Take your time, then decide — kyunki yeh important hai. For us. For you. I won't force it.</p>
+      <h1 class="serif">Thank you, Mam.</h1>
+      <p class="line">Your answer has reached me.</p>
+      <p class="line">Whatever you chose — thank you for being honest with me.</p>
       <p class="line serif" style="font-size:1.3rem;color:var(--gold);">Have a good day, Mam. ♥</p>
     </div>
   </section>
 </div>
 
-<div class="footer">made with a lot of nervous hoping · <span id="footYear"></span></div>
+<div class="footer">made just for you · <span id="footYear"></span></div>
 
-<!-- goodbye overlay -->
 <div id="goodbye">
   <div class="byeheart">♥</div>
-  <div class="bye">Goodbye.</div>
+  <div class="bye">Okay, Mam. Thank you for being honest.</div>
   <div class="byedate" id="byeDate"></div>
 </div>
 
@@ -389,12 +330,12 @@
 (function(){
   "use strict";
   var FORM_ENDPOINT = 'https://formsubmit.co/ajax/harshgupta25012002@gmail.com';
-  var answers = { name:'Mam', q_friend:'', q_chance:'', q_fwb:'', q_reels:'', q_time:'', q_nevergiveup:'', date:'', time:'', place:'', message:'' };
+  var answers = { q_friend:'', q_chance:'', q_fwb:'', q_reels:'', q_time:'' };
 
   var $  = function(s,c){ return (c||document).querySelector(s); };
   var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
 
-  /* ---------- drifting hearts ---------- */
+  /* drifting hearts */
   var hc = $('#hearts');
   for(var i=0;i<16;i++){
     var h=document.createElement('div');
@@ -407,47 +348,29 @@
   }
   $('#footYear').textContent = new Date().getFullYear();
 
-  /* ---------- screen router ---------- */
-  var order = ['s-envelope','s-letter','s-decision1','s-ch1title','s-page2','s-page3title','s-page3','s-thanks'];
+  /* screens */
   function show(id){
     $$('.screen').forEach(function(s){ s.classList.remove('active'); });
-    var el = document.getElementById(id);
-    el.classList.add('active');
+    document.getElementById(id).classList.add('active');
     window.scrollTo({top:0,behavior:'smooth'});
-    if(id==='s-letter')  runLines('#s-letter');
-    if(id==='s-page3')   { runLines('#s-page3'); typeIn(); }
-    if(id==='s-page2' || id==='s-decision1' || id==='s-letter') setProgress(1);
-    if(id==='s-ch1title'|| id==='s-page2') setProgress(2);
-    if(id==='s-page3title'|| id==='s-page3'|| id==='s-thanks') setProgress(3);
+    if(id==='s-intro' || id==='s-thanks') runLines('#'+id);
+    if(id==='s-intro' || id==='s-friend') setProgress(1);
+    if(id==='s-ask') setProgress(2);
+    if(id==='s-thanks') setProgress(3);
   }
   function setProgress(n){
-    var p=$('#progress'); p.classList.add('show');
+    $('#progress').classList.add('show');
     $$('#progress span').forEach(function(s,idx){ s.classList.toggle('done', idx<n); });
   }
-
-  /* ---------- staggered lines ---------- */
   function runLines(scope){
     var lines=$$(scope+' .line');
     lines.forEach(function(l){ l.classList.remove('in'); });
     lines.forEach(function(l,idx){ setTimeout(function(){ l.classList.add('in'); }, 260*idx+120); });
   }
 
-  /* ---------- typewriter "Are you in?" ---------- */
-  function typeIn(){
-    var el=$('#areYouIn'), txt='Are you in?', k=0;
-    el.textContent='';
-    var delay = 260*$$('#s-page3 .line').length + 500;
-    setTimeout(function step(){
-      el.textContent = txt.slice(0,k++);
-      if(k<=txt.length) setTimeout(step,90);
-    }, delay);
-  }
-
-  /* ---------- warmth ---------- */
+  /* warmth + heart burst */
   var warm=0;
-  function addWarmth(){ warm=Math.min(1, warm+0.14); document.documentElement.style.setProperty('--warmth', warm); }
-
-  /* ---------- heart burst ---------- */
+  function addWarmth(){ warm=Math.min(1, warm+0.16); document.documentElement.style.setProperty('--warmth', warm); }
   function burst(x,y,big){
     var n = big?34:16;
     for(var i=0;i<n;i++){
@@ -471,11 +394,11 @@
     }
   }
   function burstFrom(elm,big){
-    var r=(elm||document.body).getBoundingClientRect();
+    var r=elm.getBoundingClientRect();
     burst(r.left+r.width/2, r.top+r.height/2, big);
   }
 
-  /* ---------- best-effort send ---------- */
+  /* email */
   function send(payloadObj, subject){
     var fd=new FormData();
     fd.append('_subject', subject);
@@ -485,101 +408,59 @@
     return fetch(FORM_ENDPOINT,{ method:'POST', headers:{'Accept':'application/json'}, body:fd });
   }
 
-  /* ================= ENVELOPE ================= */
+  /* flow */
   $('#envBtn').addEventListener('click', function(){
     $('#envelope').classList.add('env-open');
     burstFrom($('#envelope'));
-    setTimeout(function(){ show('s-letter'); }, 900);
+    setTimeout(function(){ show('s-intro'); }, 900);
   });
+  $('#toFriend').addEventListener('click', function(){ show('s-friend'); });
 
-  /* ================= LETTER -> DECISION ================= */
-  $('#toDecision1').addEventListener('click', function(){ show('s-decision1'); });
-
-  /* ================= DECISION 1 ================= */
   $('#friendYes').addEventListener('click', function(e){
     answers.q_friend='YES'; addWarmth();
     burst(e.clientX,e.clientY,true);
-    setTimeout(function(){ show('s-ch1title'); }, 550);
+    setTimeout(function(){ show('s-ask'); }, 550);
   });
   $('#friendNo').addEventListener('click', function(){
     answers.q_friend='NO';
-    // let him know, quietly — don't make her wait on it
-    try{ send({ outcome:'She chose NO at "will you be my friend"', 'reached':'Decision 1', when:new Date().toLocaleString() }, 'about us — her answer'); }catch(_){}
+    try{ send({ 'Q  will you be my friend':'NO', when:new Date().toLocaleString() }, 'Mam answered — NO'); }catch(_){}
     $('#byeDate').textContent = new Date().toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'});
     $('#goodbye').classList.add('show');
   });
 
-  /* ================= CH1 TITLE -> PAGE 2 ================= */
-  $('#toPage2').addEventListener('click', function(){ show('s-page2'); });
-
-  /* ================= PAGE 2 MINI QUESTIONS ================= */
-  function wireQ(qEl, onYes){
-    var yes=$('.yes',qEl), no=$('.no',qEl);
+  $$('#s-ask .q').forEach(function(qEl){
     function answer(val){
       if(qEl.classList.contains('answered')) return;
       answers[qEl.dataset.key] = val;
       qEl.classList.add('answered', val==='YES'?'yes-tag':'no-tag');
       if(val==='YES'){ addWarmth(); burstFrom(qEl); }
-      if(onYes) onYes();
     }
-    yes.addEventListener('click', function(){ answer('YES'); });
-    no.addEventListener('click', function(){ answer('NO'); });
-  }
-  var p2qs = $$('#s-page2 .q');
-  p2qs.forEach(function(q){
-    wireQ(q, function(){
-      if(p2qs.every(function(x){ return x.classList.contains('answered'); })){
-        $('#page2NextRow').style.display='flex';
-      }
-    });
+    $('.yes',qEl).addEventListener('click', function(){ answer('YES'); });
+    $('.no',qEl).addEventListener('click', function(){ answer('NO'); });
   });
-  $('#toPage3').addEventListener('click', function(){ show('s-page3title'); });
 
-  /* ================= PAGE 3 ================= */
-  $('#toPage3body').addEventListener('click', function(){ show('s-page3'); });
-  wireQ($('#s-page3 .q'));
-
-  /* ================= SUBMIT ================= */
-  var form=$('#loveForm'), statusEl=$('#status'), submitBtn=$('#submitBtn');
+  var form=$('#replyForm'), statusEl=$('#status'), submitBtn=$('#submitBtn');
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    if(!$('#s-page3 .q').classList.contains('answered')){
-      statusEl.textContent = 'ek promise reh gaya — "will you?" wala.'; return;
+    if(!$$('#s-ask .q').every(function(q){ return q.classList.contains('answered'); })){
+      statusEl.textContent = 'please answer every question first — yes or no.'; return;
     }
     submitBtn.disabled=true; statusEl.textContent='sending…';
-
-    answers.date  = form.date.value;
-    answers.time  = form.time.value;
-    answers.place = form.place.value.trim();
-    answers.message = form.message.value.trim();
-
     var payload = {
-      from: answers.name,
-      'Q  will you be my friend':       answers.q_friend,
-      'Q  give us a chance':            answers.q_chance,
-      'Q  can we be FWB':               answers.q_fwb,
+      'Q  will you be my friend':        answers.q_friend,
+      'Q  give us a chance':             answers.q_chance,
+      'Q  can we be FWB':                answers.q_fwb,
       'Q  share romantic reels + memes': answers.q_reels,
-      'Q  just need your time':         answers.q_time,
-      'Q  never give up on each other': answers.q_nevergiveup,
-      'Plan  date':  answers.date,
-      'Plan  time':  answers.time,
-      'Plan  place': answers.place,
-      'Her message': answers.message,
+      'Q  just need your time':          answers.q_time,
+      'Her message': form.message.value.trim(),
       when: new Date().toLocaleString()
     };
-
-    send(payload, 'She answered 💕 — full reply inside').then(function(res){
+    send(payload, 'Mam answered 💕 — full reply inside').then(function(res){
       if(!res.ok) throw new Error('bad');
-      return res.json().catch(function(){ return {}; });
-    }).then(function(){
-      var d = answers.date ? new Date(answers.date+'T'+(answers.time||'00:00')) : null;
-      var pretty = d ? d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'}) : answers.date;
-      $('#planEcho').textContent = 'You, me — ' + pretty + (answers.time?(' at '+answers.time):'') + ', ' + (answers.place||'somewhere') + '.';
       show('s-thanks');
       burstFrom($('#s-thanks .card'), true);
-      setTimeout(function(){ burstFrom($('#s-thanks .card'), true); }, 600);
     }).catch(function(){
-      statusEl.textContent = "hmm, woh send nahi hua — ek baar aur try karogi?";
+      statusEl.textContent = "that didn't send — please try once more?";
       submitBtn.disabled=false;
     });
   });
