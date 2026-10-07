@@ -260,20 +260,56 @@
       <p class="serif" style="font-size:1.18rem;color:#e0f4f1;">Mam, I'll complete every wish of yours — and I promise I won't make you cry or sad.</p>
       <p class="muted">Just yes or no.</p>
 
-      <div class="q" data-key="q_chance">
-        <p>Can you give us a chance?</p>
+      <div class="q" data-key="q_happy">
+        <p>Are you happy with me?</p>
         <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
         <div class="tag y">yes ✓</div><div class="tag n">no</div>
       </div>
 
-      <div class="q" data-key="q_fwb">
-        <p>Can we be FWB? We start with friends — and there will be lots of dates, trips, events, intimacy… everything.</p>
+      <div class="q" data-key="q_with">
+        <p>Do you want to be with me?</p>
+        <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
+        <div class="tag y">yes ✓</div><div class="tag n">no</div>
+      </div>
+
+      <div class="q" data-key="q_trips">
+        <p>Can we explore Pune and Delhi together — and go on lots of trips, just us?</p>
+        <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
+        <div class="tag y">yes ✓</div><div class="tag n">no</div>
+      </div>
+
+      <div class="q" data-key="q_haq">
+        <p>Can we have a right on each other — <i>ek dusre pe haq</i>?</p>
         <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
         <div class="tag y">yes ✓</div><div class="tag n">no</div>
       </div>
 
       <div class="q" data-key="q_reels">
-        <p>Can I share romantic reels with you — the intimate ones too — and memes, everything?</p>
+        <p>Can I send you romantic reels — the intimate ones too — and memes, everything?</p>
+        <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
+        <div class="tag y">yes ✓</div><div class="tag n">no</div>
+      </div>
+
+      <div class="q" data-key="q_trust">
+        <p>Do you trust me?</p>
+        <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
+        <div class="tag y">yes ✓</div><div class="tag n">no</div>
+      </div>
+
+      <div class="q" data-key="q_romance">
+        <p>Can we have lots and lots of romance?</p>
+        <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
+        <div class="tag y">yes ✓</div><div class="tag n">no</div>
+      </div>
+
+      <div class="q" data-key="q_fantasy">
+        <p>Can we complete my intimate fantasies list together — slowly, at your pace, only what you're comfortable with, and you can say no to anything anytime?</p>
+        <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
+        <div class="tag y">yes ✓</div><div class="tag n">no</div>
+      </div>
+
+      <div class="q" data-key="q_bucket">
+        <p>And our normal bucket list too — places, food, firsts, everything?</p>
         <div class="btn-row"><button class="yes mini">Yes</button><button class="no mini">No</button></div>
         <div class="tag y">yes ✓</div><div class="tag n">no</div>
       </div>
@@ -319,7 +355,7 @@
   "use strict";
   var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
   var ACCESS_KEY = '90500db2-9996-439f-a0f9-f9d5c2e0e7e8';
-  var answers = { q_friend:'', q_chance:'', q_fwb:'', q_reels:'', q_time:'' };
+  var answers = {};
 
   var $  = function(s,c){ return (c||document).querySelector(s); };
   var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
@@ -438,11 +474,17 @@
     }
     submitBtn.disabled=true; statusEl.textContent='sending…';
     var payload = {
-      'Q  will you be my friend':        answers.q_friend,
-      'Q  give us a chance':             answers.q_chance,
-      'Q  can we be FWB':                answers.q_fwb,
-      'Q  share romantic reels + memes': answers.q_reels,
-      'Q  just need your time':          answers.q_time,
+      'Q  will you be my friend': answers.q_friend,
+      'Q  are you happy with me': answers.q_happy,
+      'Q  want to be with me': answers.q_with,
+      'Q  Pune, Delhi + trips': answers.q_trips,
+      'Q  ek dusre pe haq': answers.q_haq,
+      'Q  intimate/romantic reels + memes': answers.q_reels,
+      'Q  do you trust me': answers.q_trust,
+      'Q  lots of romance': answers.q_romance,
+      'Q  intimate fantasies list': answers.q_fantasy,
+      'Q  normal bucket list': answers.q_bucket,
+      'Q  just need your time': answers.q_time,
       'Her message': form.message.value.trim(),
       when: new Date().toLocaleString()
     };
