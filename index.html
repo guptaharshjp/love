@@ -245,7 +245,7 @@
   <!-- FRIEND -->
   <section class="screen" id="s-friend">
     <div class="card center">
-      <h1>Mam, will you be my friend?</h1>
+      <h1>Mam, can we become each other's world?<br>Can we be together?</h1>
       <p class="muted">Yes — and I'll ask you a little more.<br>No — and that's completely okay.</p>
       <div class="btn-row center">
         <button class="yes" id="friendYes">Yes</button>
@@ -450,7 +450,7 @@
   });
   $('#friendNo').addEventListener('click', function(){
     answers.q_friend='NO';
-    send({ 'Q  will you be my friend':'NO', when:new Date().toLocaleString() }, 'Mam answered — NO').catch(function(){});
+    send({ 'Q  each other\'s world, be together':'NO', when:new Date().toLocaleString() }, 'Mam answered — NO').catch(function(){});
     $('#byeDate').textContent = new Date().toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'});
     $('#goodbye').classList.add('show');
   });
@@ -474,7 +474,7 @@
     }
     submitBtn.disabled=true; statusEl.textContent='sending…';
     var payload = {
-      'Q  will you be my friend': answers.q_friend,
+      'Q  each other\'s world, be together': answers.q_friend,
       'Q  are you happy with me': answers.q_happy,
       'Q  want to be with me': answers.q_with,
       'Q  explore all of India + trips': answers.q_trips,
